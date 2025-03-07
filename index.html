@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miner AI - Jogo de Mineração</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+        }
+        #crosshair::before,
+        #crosshair::after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border: 1px solid black;
+        }
+        #crosshair::before {
+            top: 9px;
+            left: 0;
+            width: 20px;
+            height: 2px;
+        }
+        #crosshair::after {
+            top: 0;
+            left: 9px;
+            width: 2px;
+            height: 20px;
+        }
+
+        /* Estilo do menu de blocos */
+        #blockMenu {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 4px;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        .block-slot {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #555;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .block-slot.selected {
+            border-color: #fff;
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .block-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .block-preview.dirt {
+            background: #8B4513;
+            background-image: radial-gradient(circle, rgba(139, 69, 19, 0.7) 10%, transparent 10%);
+            background-size: 10px 10px;
+        }
+
+        .block-preview.stone {
+            background: #808080;
+            background-image: linear-gradient(45deg, rgba(128, 128, 128, 0.8) 25%, transparent 25%),
+                            linear-gradient(-45deg, rgba(128, 128, 128, 0.8) 25%, transparent 25%);
+            background-size: 10px 10px;
+        }
+
+        .block-preview.grass {
+            background: #228B22;
+            background-image: radial-gradient(circle, rgba(34, 139, 34, 0.7) 15%, transparent 15%);
+            background-size: 8px 8px;
+        }
+
+        .block-preview.wood {
+            background: #8B4513;
+            background-image: linear-gradient(0deg, rgba(139, 69, 19, 0.7) 10%, transparent 10%, transparent 90%, rgba(139, 69, 19, 0.7) 90%);
+            background-size: 100% 8px;
+        }
+
+        .block-preview.leaves {
+            background: #228B22;
+            background-image: radial-gradient(circle, rgba(34, 139, 34, 0.7) 20%, transparent 20%);
+            background-size: 12px 12px;
+            background-position: 0 0, 6px 6px;
+        }
+    </style>
+    <!-- Importando Three.js via CDN -->
+    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/controls/PointerLockControls.js"></script>
+</head>
+<body>
+    <div id="info">
+        Controles:<br>
+        WASD - Movimento<br>
+        ESPAÇO - Pular (2x para pulo duplo)<br>
+        Mouse - Olhar ao redor<br>
+        Clique Esquerdo - Quebrar bloco<br>
+        Clique Direito - Colocar bloco<br>
+        ESC - Menu<br>
+        Scroll - Trocar bloco
+    </div>
+    <div id="crosshair"></div>
+    <div id="blockMenu">
+        <div class="block-slot selected" data-block="dirt">
+            <div class="block-preview dirt"></div>
+        </div>
+        <div class="block-slot" data-block="stone">
+            <div class="block-preview stone"></div>
+        </div>
+        <div class="block-slot" data-block="grass">
+            <div class="block-preview grass"></div>
+        </div>
+        <div class="block-slot" data-block="wood">
+            <div class="block-preview wood"></div>
+        </div>
+        <div class="block-slot" data-block="leaves">
+            <div class="block-preview leaves"></div>
+        </div>
+    </div>
+    <script type="module" src="js/world.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html> 
